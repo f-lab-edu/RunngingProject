@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">RunningProject_MVVM</string>
+
+
+    <!-- Common   -->
+    <string name="des_img">대표 아이콘</string>
+
+    <!--Login Activity  , SignUp Activity  -->
+    <string name="hint_id">아이디</string>
+    <string name="hint_password">비밀 번호</string>
+    <string name="hint_nick_name">닉네임</string>
+    <string name="hint_phone_number">전화 번호</string>
+    <string name="txt_no_user">아직 회원가입을 안하셨나요? 여기를 눌러 회원가입 하세요!</string>
+    <string name="txt_already_user">이미 회원이 신가요? 여기를 눌러 로그인 하세요!</string>
+    <string name="btn_login">로그인</string>
+    <string name="btn_sign_up">회원 가입</string>
+
+
+    <!-- Toast message-->
+    <string name="msg_pls_input_userinfo">회원정보를 입력해주세요</string>
+    <string name="msg_check_network">네트워크를 확인해주세요</string>
+    <string name="msg_already_signup">이미 회원 이십니다</string>
+    <string name="msg_signup_okay">회원가입이 가능하십니다. 회원가입 진행중입니다. 잠시 기다려 주세요</string>
+    <string name="msg_success_signup">회원 가입에 성공 하셨습니다.</string>
+    <string name="msg_login_loading">로그인 중 입니다. 잠시 기다려 주세요 </string>
+    <string name="msg_success_login">로그인 에 성공 했습니다.</string>
+    <string name="msg_check_login_data">회원 정보를 확인해 주세요</string>
+    <string name="msg_un_correct_login_data">회원정보가 불일치 합니다. 확인해주시길 바랍니다</string>
+</resources>
