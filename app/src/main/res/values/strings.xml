@@ -26,4 +26,5 @@
     <string name="msg_success_login">로그인 에 성공 했습니다.</string>
     <string name="msg_check_login_data">회원 정보를 확인해 주세요</string>
     <string name="msg_un_correct_login_data">회원정보가 불일치 합니다. 확인해주시길 바랍니다</string>
+    <string name="msg_error_app">App Error 개발자 에게 연락해주세요</string>
 </resources>

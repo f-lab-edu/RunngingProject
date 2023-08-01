@@ -17,5 +17,13 @@ class Define {
         const val PROP_MESSAGE_NO_USER="noUser"
         const val PROP_MESSAGE_SUCCESS_LOGIN = "successLogin"
         const val PROP_MESSAGE_CHECK_LOGIN_DATA = "checkLoginData"
+        const val PROP_DATA_NULL = "dataNull"
+
+
+    }
+    enum class Status {
+        LOADING ,
+        SUCCESS ,
+        ERROR
     }
 }

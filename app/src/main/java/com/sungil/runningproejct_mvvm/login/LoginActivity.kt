@@ -6,14 +6,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.BuildConfig
 import com.sungil.runningproejct_mvvm.R
 import com.sungil.runningproejct_mvvm.databinding.ActivityLoginBinding
 import com.sungil.runningproejct_mvvm.login.factory.LoginFactory
 import com.sungil.runningproejct_mvvm.login.viewModel.LoginViewModel
 import com.sungil.runningproejct_mvvm.`object`.LoginData
 import com.sungil.runningproejct_mvvm.repository.loginImpl.LoginRepoImpl
-import com.sungil.runningproejct_mvvm.utill.Define
-import com.sungil.runningproejct_mvvm.utill.Resource
 import timber.log.Timber
 
 /**
@@ -26,50 +25,44 @@ class LoginActivity : AppCompatActivity() {
     private var _viewModel : LoginViewModel ?= null
     private val viewModel get() = _viewModel!!
 
-    private val repository = LoginRepoImpl()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        init()
+        initViewModel()
         addListener()
     }
-    //viewModel init
-    private fun init(){
-        val factory = LoginFactory(repository)
+    private fun initViewModel(){
+        val factory = LoginFactory(LoginRepoImpl(this))
         _viewModel = ViewModelProvider(this , factory)[LoginViewModel :: class.java]
     }
 
     private fun addListener(){
         //개발자 용
+        //TODO 제거 or BuildConig 에서 Dubug 애서만 쓸수 있게 , GIT ISSUE 사용하기 , 혹은 시크릿 창을 만들어 아이디 비번 직접 칠수 있도록
         binding.icIcon.setOnClickListener {
-            binding.editId.setText("sonny132@naver.com")
-            binding.editPassword.setText("12345")
+            if(!BuildConfig.DEBUG){
+                binding.editId.setText("sonny132@naver.com")
+                binding.editPassword.setText("12345")
+            }
         }
 
         //로그인 LiveData
+        //Resour
         viewModel.loginLiveData.observe(this , Observer {
             when(it.status){
-                Resource.Status.LOADING ->{
+                LoginViewModel.LoginStatus.LoadingStatus.LOADING ->{
                     Timber.d("Loading for Login")
                     Toast.makeText(this , getString(R.string.msg_login_loading), Toast.LENGTH_SHORT ).show()
                 }
-                Resource.Status.SUCCESS ->{
+                LoginViewModel.LoginStatus.LoadingStatus.SUCCESS ->{
                     Timber.d("Success for Login")
                     Toast.makeText(this , getString(R.string.msg_success_login), Toast.LENGTH_SHORT ).show()
+
                 }
-                Resource.Status.ERROR ->{
+                LoginViewModel.LoginStatus.LoadingStatus.ERROR ->{
                     Timber.e("ERROR to Login")
-                    when(it.exception){
-                        Define.PROP_MESSAGE_NO_USER ->{
-                            Toast.makeText(this , getString(R.string.msg_check_login_data), Toast.LENGTH_SHORT ).show()
-                        }
-                        Define.PROP_MESSAGE_CHECK_LOGIN_DATA ->{
-                            Toast.makeText(this , getString(R.string.msg_un_correct_login_data), Toast.LENGTH_SHORT ).show()
-                        }
-                        else ->  Toast.makeText(this ,getString(R.string.msg_check_network) , Toast.LENGTH_SHORT).show()
-                    }
+
                 }
             }
         })

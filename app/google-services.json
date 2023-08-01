@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "56114685136",
+    "firebase_url": "https://flabrunningproject-default-rtdb.firebaseio.com",
+    "project_id": "flabrunningproject",
+    "storage_bucket": "flabrunningproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56114685136:android:a6f16e85b1f08f28b0ead5",
+        "android_client_info": {
+          "package_name": "com.sungil.runningproejct_mvvm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56114685136-qvtf191qidlqa45a9luu12o8td0abgl0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwyUzKwlsV-p-6UsVPGtO0z99guhgzIOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56114685136-qvtf191qidlqa45a9luu12o8td0abgl0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
