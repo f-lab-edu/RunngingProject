@@ -5,15 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sungil.runningproejct_mvvm.login.viewModel.SignUpViewModel
 import com.sungil.runningproejct_mvvm.repository.LoginRepository
+import com.sungil.runningproejct_mvvm.repository.loginImpl.LoginRepoImpl
 
 /**
  * 회원가입 viewModel 을 위한 Facotry
  */
-class SignUpFactory(private val repository: LoginRepository , private val context : Context) : ViewModelProvider.Factory {
+class SignUpFactory(private val context : Context) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(SignUpViewModel :: class.java)){
-            return SignUpViewModel(repository , context) as T
+            return SignUpViewModel(LoginRepoImpl(context) , context) as T
         }
         throw IllegalArgumentException("UnKnow ViewModel class")
     }

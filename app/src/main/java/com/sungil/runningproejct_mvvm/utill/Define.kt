@@ -18,7 +18,7 @@ class Define {
         const val PROP_MESSAGE_SUCCESS_LOGIN = "successLogin"
         const val PROP_MESSAGE_CHECK_LOGIN_DATA = "checkLoginData"
         const val PROP_DATA_NULL = "dataNull"
-
+        const val PROP_SAVE_USERINFO = "userInfo"
 
     }
     enum class Status {

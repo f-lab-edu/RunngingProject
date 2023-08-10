@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sungil.runningproejct_mvvm.`object`.LoginData
+import com.sungil.runningproejct_mvvm.`object`.UserInfo
 import com.sungil.runningproejct_mvvm.repository.LoginRepository
+import com.sungil.runningproejct_mvvm.utill.Define
 import com.sungil.runningproejct_mvvm.utill.ListenerMessage
 import com.sungil.runningproejct_mvvm.utill.RepositoryListener
 import kotlinx.coroutines.Dispatchers
@@ -14,47 +16,37 @@ import kotlinx.coroutines.launch
  * Login viewModel
  */
 class LoginViewModel(private val repository: LoginRepository) : ViewModel(), RepositoryListener {
-    //LiveData 여러개 쓰던가
-    //LiveData 하나만?->
-    private var _loginLiveData = MutableLiveData<LoginStatus<String>>()
+    private var _loginLiveData = MutableLiveData<LoginStatus>()
     val loginLiveData get() = _loginLiveData
 
-    //로그인 요청
-    fun requestLogin(data: LoginData) = viewModelScope.launch(Dispatchers.IO) {
-//        _loginLiveData.postValue(LoginStatus<String>(null , null).loadingForLogin())
-         _loginLiveData.postValue(LoginStatus.loadingForLogin())
-        repository.requestLogin(data, this@LoginViewModel)
+    //이전 함수 시작할때부터 코루틴 -> 이제 Repository 들어갈떄만 코루틴
+    fun requestLogin(data: LoginData){
+        _loginLiveData.value = LoginStatus.LoginLoading
+        viewModelScope.launch (Dispatchers.IO){
+            repository.requestLogin(data, this@LoginViewModel)
+        }
     }
 
     //Firebase 에 대한 응답 Listener
     override fun onMessageSuccess(data: ListenerMessage) {
-//        _loginLiveData.postValue(LoginStatus<String>(data.message as UserInfo , null ).successForLogin())
-        _loginLiveData.postValue(LoginStatus.loginSuccess(data.message))
+        when(data.message){
+            Define.PROP_SAVE_USERINFO ->{
+                val userInfo = data.data as UserInfo
+                repository.saveUserInfo(userInfo , this )
+            }
+            else -> _loginLiveData.setValue(LoginStatus.LoginSuccess(data.message))
+        }
     }
 
     override fun onMessageFail(data: ListenerMessage) {
-//        _loginLiveData.postValue(Resource.error(data.message))
-        _loginLiveData.postValue(LoginStatus.loginError(data.message))
+        _loginLiveData.value = LoginStatus.LoginError(data.message)
     }
+    //data class Resource -> sealed class 로 변경
+    sealed class LoginStatus {
+        data class LoginSuccess(val data : String) : LoginStatus()
+        data class LoginError(val message : String) : LoginStatus()
 
-    data class LoginStatus<out T>(val status : LoadingStatus, val successMessage: String ?, val exception : String?){
-        enum class LoadingStatus{
-            LOADING,
-            SUCCESS,
-            ERROR
-        }
-        companion object{
-            fun <T> loadingForLogin() : LoginStatus<T>{
-                return LoginStatus(LoadingStatus.LOADING ,  null , null )
-            }
+        object LoginLoading : LoginStatus()
 
-            fun <T> loginSuccess(data : String) :  LoginStatus<T> {
-                return LoginStatus(LoadingStatus.SUCCESS , data ,  null )
-            }
-
-            fun <T> loginError(message: String) : LoginStatus<T> {
-                return LoginStatus(LoadingStatus.ERROR , null , message)
-            }
-        }
     }
 }

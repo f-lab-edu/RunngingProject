@@ -9,6 +9,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.sungil.runningproejct_mvvm.R
+import com.sungil.runningproejct_mvvm.appDatabase.AppDatabase
 import com.sungil.runningproejct_mvvm.`object`.LoginData
 import com.sungil.runningproejct_mvvm.`object`.UserInfo
 import com.sungil.runningproejct_mvvm.repository.LoginRepository
@@ -16,6 +17,7 @@ import com.sungil.runningproejct_mvvm.utill.Define
 import com.sungil.runningproejct_mvvm.utill.ListenerMessage
 import com.sungil.runningproejct_mvvm.utill.RepositoryListener
 import timber.log.Timber
+import kotlin.Exception
 
 
 /**
@@ -76,7 +78,7 @@ class LoginRepoImpl (context : Context) : LoginRepository {
                     return
                 }
                 if(value.id == data.id && value.password == data.password){
-                    Listener.onMessageSuccess(ListenerMessage(null  , loginImplContext.getString(R.string.msg_success_login)))
+                    Listener.onMessageSuccess(ListenerMessage(value  , Define.PROP_SAVE_USERINFO))
                     return
                 }
                 Listener.onMessageFail(ListenerMessage(null , loginImplContext.getString(R.string.msg_check_login_data)))
@@ -87,4 +89,25 @@ class LoginRepoImpl (context : Context) : LoginRepository {
             }
         })
     }
+
+    override fun saveUserInfo(data: UserInfo, Listener: RepositoryListener) {
+        try{
+            val appRoomData = AppDatabase.getInst().userInfoDao().getUserInfo()
+            if(appRoomData == null){
+                AppDatabase.getInst().userInfoDao().insert(data)
+            }else {
+                if(appRoomData.id == data.id && appRoomData.password == data.password){
+                    AppDatabase.getInst().userInfoDao().update(data)
+                }else{
+                    AppDatabase.getInst().userInfoDao().delete(appRoomData)
+                    AppDatabase.getInst().userInfoDao().insert(data)
+                }
+            }
+
+            Listener.onMessageSuccess(ListenerMessage(null  , loginImplContext.getString(R.string.msg_success_login)))
+        }catch (e : Exception){
+            Listener.onMessageFail(ListenerMessage(null , loginImplContext.getString(R.string.msg_error_app)))
+        }
+    }
+
 }

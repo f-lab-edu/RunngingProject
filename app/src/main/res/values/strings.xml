@@ -16,6 +16,11 @@
     <string name="btn_sign_up">회원 가입</string>
 
 
+    <!-- MainActivity -->
+    <string name="txt_my_sns">나의 개시물</string>
+    <string name="txt_the_other">다른 사람 개시물</string>
+
+
     <!-- Toast message-->
     <string name="msg_pls_input_userinfo">회원정보를 입력해주세요</string>
     <string name="msg_check_network">네트워크를 확인해주세요</string>

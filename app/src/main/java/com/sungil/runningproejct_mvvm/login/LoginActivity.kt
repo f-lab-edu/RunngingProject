@@ -3,16 +3,17 @@ package com.sungil.runningproejct_mvvm.login
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.BuildConfig
+import com.sungil.runningproejct_mvvm.MainApplication
 import com.sungil.runningproejct_mvvm.R
 import com.sungil.runningproejct_mvvm.databinding.ActivityLoginBinding
 import com.sungil.runningproejct_mvvm.login.factory.LoginFactory
 import com.sungil.runningproejct_mvvm.login.viewModel.LoginViewModel
+import com.sungil.runningproejct_mvvm.main.MainActivity
 import com.sungil.runningproejct_mvvm.`object`.LoginData
-import com.sungil.runningproejct_mvvm.repository.loginImpl.LoginRepoImpl
 import timber.log.Timber
 
 /**
@@ -22,24 +23,16 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var  binding : ActivityLoginBinding
 
-    private var _viewModel : LoginViewModel ?= null
-    private val viewModel get() = _viewModel!!
-
+    private val viewModel : LoginViewModel by viewModels{LoginFactory(MainApplication.appContext)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initViewModel()
-        addListener()
-    }
-    private fun initViewModel(){
-        val factory = LoginFactory(LoginRepoImpl(this))
-        _viewModel = ViewModelProvider(this , factory)[LoginViewModel :: class.java]
+        observer()
     }
 
-    private fun addListener(){
+    private fun observer(){
         //개발자 용
-        //TODO 제거 or BuildConig 에서 Dubug 애서만 쓸수 있게 , GIT ISSUE 사용하기 , 혹은 시크릿 창을 만들어 아이디 비번 직접 칠수 있도록
         binding.icIcon.setOnClickListener {
             if(!BuildConfig.DEBUG){
                 binding.editId.setText("sonny132@naver.com")
@@ -47,29 +40,29 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        //로그인 LiveData
-        //Resour
-        viewModel.loginLiveData.observe(this , Observer {
-            when(it.status){
-                LoginViewModel.LoginStatus.LoadingStatus.LOADING ->{
+        viewModel.loginLiveData.observe(this , Observer {loginStatus ->
+            when(loginStatus) {
+                is LoginViewModel.LoginStatus.LoginLoading->{
                     Timber.d("Loading for Login")
                     Toast.makeText(this , getString(R.string.msg_login_loading), Toast.LENGTH_SHORT ).show()
                 }
-                LoginViewModel.LoginStatus.LoadingStatus.SUCCESS ->{
+
+                is LoginViewModel.LoginStatus.LoginSuccess ->{
                     Timber.d("Success for Login")
                     Toast.makeText(this , getString(R.string.msg_success_login), Toast.LENGTH_SHORT ).show()
-
+                    val intent = Intent(this , MainActivity :: class.java)
+                    intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
                 }
-                LoginViewModel.LoginStatus.LoadingStatus.ERROR ->{
+                is LoginViewModel.LoginStatus.LoginError ->{
                     Timber.e("ERROR to Login")
-
                 }
             }
         })
-        //로그인시 회원정보가 있는지 판별
+
         binding.btnLogin.setOnClickListener {
-            val id = binding.editId.text.toString().replace(" ","").replace(".","")
-            val password = binding.editPassword.text.toString().replace(" ", "").replace(".","")
+            val id = binding.editId.text.toString().trim().replace(".","")
+            val password = binding.editPassword.text.toString().trim().replace(".","")
             if(id == "" || password ==""){
                 Timber.d("id or password is Null")
                 Toast.makeText(this , getString(R.string.msg_pls_input_userinfo) , Toast.LENGTH_SHORT).show()
