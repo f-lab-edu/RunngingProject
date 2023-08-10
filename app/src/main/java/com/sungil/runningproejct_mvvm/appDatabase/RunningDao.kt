@@ -7,7 +7,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.sungil.runningproejct_mvvm.`object`.WearRunDataDBM
-//running data
+//running data 추가
 @Dao
 interface RunningDao {
 

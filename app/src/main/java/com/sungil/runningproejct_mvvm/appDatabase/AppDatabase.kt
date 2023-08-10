@@ -12,7 +12,7 @@ import com.sungil.runningproejct_mvvm.`object`.WearRunDataDBM
     version = 1
 )
 
-//appDatabase 추가
+//appDatabase 추가 userinfo 은 회원정보 wearRunning 은 운동정보
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun wearRunningDao() :  RunningDao

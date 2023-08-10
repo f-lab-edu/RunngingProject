@@ -15,7 +15,7 @@ import com.sungil.runningproejct_mvvm.main.factory.MainViewModelFactory
 import com.sungil.runningproejct_mvvm.main.viewModel.MainViewModel
 import com.sungil.runningproejct_mvvm.`object`.WearRunDataDBM
 import timber.log.Timber
-
+//Main
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding

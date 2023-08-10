@@ -6,7 +6,7 @@ import com.sungil.runningproejct_mvvm.`object`.WearRunDataDBM
 import com.sungil.runningproejct_mvvm.repository.MainRepository
 
 class MainRepositoryImpl() : MainRepository {
-    //repository
+    //repository 추가
     override fun getRunningRoomDB(): LiveData<WearRunDataDBM?> {
         return AppDatabase.getInst().wearRunningDao().getRunningData()
     }

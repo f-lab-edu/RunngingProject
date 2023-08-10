@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.sungil.runningproejct_mvvm.`object`.UserInfo
-
+//로그인정보 추가
 @Dao
 interface UserInfoDao {
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sungil.runningproejct_mvvm.main.viewModel.MainViewModel
 import com.sungil.runningproejct_mvvm.repository.mainRepositoryImpl.MainRepositoryImpl
 
-//MainViewModelFactory
+//MainViewModelFactory 추가
 class MainViewModelFactory () : ViewModelProvider.Factory{
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
