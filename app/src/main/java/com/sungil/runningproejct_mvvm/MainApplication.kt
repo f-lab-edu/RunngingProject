@@ -8,7 +8,9 @@ import timber.log.Timber
  * MainApplication
  */
 class MainApplication : Application() {
+    companion object{
 
+    }
     override fun onCreate() {
         super.onCreate()
         init()
