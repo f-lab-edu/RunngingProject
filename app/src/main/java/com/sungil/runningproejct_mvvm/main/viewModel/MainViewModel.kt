@@ -8,7 +8,7 @@ import com.sungil.runningproejct_mvvm.utill.RepositoryListener
 //MainViewModel Factory
 class MainViewModel(private val repository: MainRepository) : ViewModel() , RepositoryListener {
     val wearLiveData get() = repository.getRunningRoomDB()
-    //repository
+    //repositoryaddasdad
     override fun onMessageSuccess(data: ListenerMessage) {
         TODO("Not yet implemented")
     }
