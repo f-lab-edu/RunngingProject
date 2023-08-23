@@ -4,6 +4,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id("com.google.gms.google-services")
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -29,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     viewBinding {
@@ -68,5 +70,35 @@ dependencies {
     //ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel"
 
+    //wear
+    implementation "com.google.android.gms:play-services-wearable:$wearable"
 
+    //gson
+    implementation "com.google.code.gson:gson:$gson"
+
+    //await
+    implementation "com.google.guava:guava:$guava"
+    implementation "androidx.concurrent:concurrent-futures-ktx:$concurrent"
+
+    //roomDatabase
+    implementation "androidx.room:room-runtime:$roomDatabase"
+    kapt "androidx.room:room-compiler:$roomDatabase"
+    implementation "androidx.room:room-ktx:$roomDatabase"
+    implementation "androidx.room:room-paging:$roomDatabase"
+
+    //viewModel
+    implementation "androidx.activity:activity-ktx:$activity_ktx"
+    implementation "androidx.fragment:fragment-ktx:$fragment_ktx"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    //gson
+    implementation "com.google.code.gson:gson:$gson"
+
+}
+
+kapt {
+    correctErrorTypes = true
 }
